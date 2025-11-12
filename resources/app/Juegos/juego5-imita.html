@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Juego 5 - Imita el fonema</title>
+  <link rel="stylesheet" href="juegos.css" />
+  <style>
+    body {
+      background: linear-gradient(120deg, #fbbf24 0%, #f472b6 50%, #60a5fa 100%);
+      background-size: 200% 200%;
+      animation: fondoAnimado 8s ease-in-out infinite alternate;
+      min-height: 100vh;
+    }
+    @keyframes fondoAnimado {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    .encabezado {
+      background: linear-gradient(90deg, #fbbf24 60%, #f472b6 100%);
+      color: #fff;
+      padding: 24px 0 10px 0;
+      border-radius: 30px 30px 0 0;
+      box-shadow: 0 6px 24px #fbbf24aa;
+      margin-bottom: 0;
+      animation: reboteEncabezado 2s infinite alternate;
+    }
+    @keyframes reboteEncabezado {
+      from { transform: translateY(0); }
+      to { transform: translateY(-10px); }
+    }
+    .contenedor-imita {
+      background: #fffbe6ee;
+      padding: 30px 20px 20px 20px;
+      border-radius: 0 0 30px 30px;
+      max-width: 700px;
+      margin: 0 auto 30px auto;
+      text-align: center;
+      box-shadow: 0 8px 32px #f472b6aa, 0 2px 12px #60a5fa55;
+      border: 4px solid #fbbf24;
+      position: relative;
+    }
+    .boton-volver-menu {
+      display: inline-block;
+      background: linear-gradient(90deg, #f472b6, #fbbf24);
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 18px;
+      padding: 14px 36px;
+      margin: 18px auto 0 auto;
+      box-shadow: 0 4px 16px #fbbf24aa;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      text-decoration: none;
+      letter-spacing: 1px;
+      animation: reboteBotonMenu 1.2s infinite alternate;
+    }
+    .boton-volver-menu:hover {
+      background: linear-gradient(90deg, #fbbf24, #f472b6);
+      transform: scale(1.08) rotate(-2deg);
+    }
+    @keyframes reboteBotonMenu {
+      from { transform: scale(1); }
+      to { transform: scale(1.08) rotate(2deg); }
+    }
+    .contenedor-imita {
+      background-color: #ffffffdd;
+      padding: 20px;
+      border-radius: 20px;
+      max-width: 600px;
+      margin: auto;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .imagen-boca {
+      margin-top: 20px;
+      max-width: 200px;
+    }
+    #mensaje {
+      margin-top: 10px;
+      font-size: 18px;
+      color: #2563eb;
+    }
+  </style>
+</head>
+<body>
+  <div class="encabezado anim-titulo">
+    <h1>🎤 ¡Imita el fonema!</h1>
+    <p>Escucha, mira y repite el sonido. ¡Hazlo divertido!</p>
+  </div>
+
+  <div class="contenedor-imita anim-borde">
+    <div class="carita-animada" id="caritaAnimada">😃</div>
+    <div class="botones-fonema">
+      <button class="boton-fonema" onclick="reproducirFonema('a')"><span class="letra-fonema">A</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('e')"><span class="letra-fonema">E</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('i')"><span class="letra-fonema">I</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('o')"><span class="letra-fonema">O</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('u')"><span class="letra-fonema">U</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('m')"><span class="letra-fonema">M</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('n')"><span class="letra-fonema">N</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('l')"><span class="letra-fonema">L</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('s')"><span class="letra-fonema">S</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('f')"><span class="letra-fonema">F</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('b')"><span class="letra-fonema">B</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('c')"><span class="letra-fonema">C</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('d')"><span class="letra-fonema">D</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('v')"><span class="letra-fonema">V</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('ñ')"><span class="letra-fonema">Ñ</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('ch')"><span class="letra-fonema">CH</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('k')"><span class="letra-fonema">K</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('j')"><span class="letra-fonema">J</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('w')"><span class="letra-fonema">W</span></button>
+      <button class="boton-fonema" onclick="reproducirFonema('z')"><span class="letra-fonema">Z</span></button>
+    </div>
+    <img id="imagenBoca" class="imagen-boca anim-boca" src="" alt="">
+    <p id="mensaje"></p>
+    <div id="confeti"></div>
+    <a href="../juegos.html" class="boton-volver-menu">⏪ Volver al menú de juegos</a>
+  </div>
+
+  <script src="juego5.js"></script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+/* ==== ESTILOS JUEGO 5: IMITA EL FONEMA ==== */
+.anim-titulo {
+  animation: destello 2s infinite alternate;
+}
+@keyframes destello {
+  from { filter: brightness(1); }
+  to { filter: brightness(1.25) drop-shadow(0 0 10px #f97316); }
+}
+
+.anim-borde {
+  border: 4px dashed #f97316;
+  box-shadow: 0 0 24px 4px #fbbf24, 0 4px 20px rgba(0,0,0,0.15);
+  animation: bordeAnimado 2s linear infinite alternate;
+}
+@keyframes bordeAnimado {
+  from { border-color: #f97316; }
+  to { border-color: #fbbf24; }
+}
+
+.botones-fonema {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.boton-fonema {
+  background: #f97316;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  width: 48px;
+  height: 48px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  outline: none;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.boton-fonema:active {
+  transform: scale(0.95);
+}
+.boton-fonema:hover {
+  background: #ea580c;
+}
+.boton-fonema .letra-fonema {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: none;
+  filter: none;
+  letter-spacing: 1px;
+  transition: none;
+}
+.boton-fonema .particula {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.7;
+  z-index: 3;
+  animation: particulaBrilla 0.8s linear forwards;
+}
+@keyframes particulaBrilla {
+  0% { opacity: 0.7; transform: scale(0.7); }
+  80% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0; transform: scale(1.5); }
+}
+
+.carita-animada {
+  font-size: 3.5rem;
+  margin-bottom: 10px;
+  transition: transform 0.2s;
+  animation: caritaRebote 1.2s infinite alternate;
+}
+@keyframes caritaRebote {
+  from { transform: scale(1) translateY(0); }
+  to { transform: scale(1.12) translateY(-8px); }
+}
+
+.boton-grabar {
+  margin-top: 18px;
+  background: linear-gradient(90deg, #fbbf24, #f97316);
+  color: #fff;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 18px;
+  padding: 10px 28px;
+  box-shadow: 0 2px 8px #fbbf24aa;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.boton-grabar:hover {
+  background: linear-gradient(90deg, #f97316, #fbbf24);
+  transform: scale(1.07) rotate(-2deg);
+}
+
+.anim-boca {
+  animation: bocaAparece 0.7s;
+}
+@keyframes bocaAparece {
+  from { opacity: 0; transform: scale(0.7) rotate(-10deg); }
+  to { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+#confeti {
+  position: fixed;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 1000;
+}
+/* Fondo de caritas sonrientes para todos los juegos */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url('https://emojiapi.dev/api/v1/1f604/128.png'), url('https://emojiapi.dev/api/v1/1f60a/128.png'), url('https://emojiapi.dev/api/v1/1f60d/128.png');
+  background-size: 80px 80px, 60px 60px, 70px 70px;
+  background-repeat: repeat;
+  opacity: 0.08;
+  background-position: 0 0, 100px 200px, 300px 100px;
+}
+
+@media (max-width: 600px) {
+  .botones-fonema {
+    gap: 4px;
+    max-width: 99vw;
+  }
+  .boton-fonema {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+    border-radius: 7px;
+  }
+  .carita-animada {
+    font-size: 2.2rem;
+  }
+  .boton-grabar {
+    font-size: 1rem;
+    padding: 7px 10px;
+    border-radius: 10px;
+  }
+} 

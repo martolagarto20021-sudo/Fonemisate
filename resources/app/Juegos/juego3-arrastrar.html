@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Juego 3 - Arrastra la letra</title>
+  <link rel="stylesheet" href="juegos.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .fondo-animado {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      background: linear-gradient(120deg, #a7e9fb 0%, #fbb6ce 100%);
+      animation: fondoColor 10s ease-in-out infinite alternate;
+    }
+    @keyframes fondoColor {
+      0% { background: linear-gradient(120deg, #a7e9fb 0%, #fbb6ce 100%); }
+      25% { background: linear-gradient(120deg, #b5f7ef 0%, #b8b5f7 100%); }
+      50% { background: linear-gradient(120deg, #b8b5f7 0%, #fbb6ce 100%); }
+      75% { background: linear-gradient(120deg, #a7e9fb 0%, #b5f7ef 100%); }
+      100% { background: linear-gradient(120deg, #a7e9fb 0%, #fbb6ce 100%); }
+    }
+    .burbuja {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.35;
+      pointer-events: none;
+      animation: flotar 12s linear infinite;
+    }
+    .burbuja1 { width: 120px; height: 120px; left: 10vw; bottom: -140px; background: #60a5fa; animation-delay: 0s; }
+    .burbuja2 { width: 80px; height: 80px; left: 70vw; bottom: -100px; background: #fbbf24; animation-delay: 2s; }
+    .burbuja3 { width: 100px; height: 100px; left: 40vw; bottom: -120px; background: #f472b6; animation-delay: 4s; }
+    .burbuja4 { width: 60px; height: 60px; left: 85vw; bottom: -80px; background: #4ade80; animation-delay: 6s; }
+    .burbuja5 { width: 90px; height: 90px; left: 25vw; bottom: -110px; background: #f59e42; animation-delay: 8s; }
+    @keyframes flotar {
+      0% { transform: translateY(0) scale(1); opacity: 0.35; }
+      70% { opacity: 0.5; }
+      100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+    }
+    .contenedor-juego-divertido {
+      display: none;
+    }
+    .contenedor-juego-divertido-flex {
+      background: rgba(255,255,255,0.97);
+      border-radius: 32px;
+      max-width: 720px;
+      margin: 40px auto 30px auto;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      padding: 36px 28px 28px 28px;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 32px;
+    }
+    .imagen-palabra {
+      width: 220px;
+      max-height: 180px;
+      object-fit: contain;
+      border-radius: 24px;
+      box-shadow: 0 4px 16px #60a5fa33;
+      margin: 0;
+      background: #fff;
+      border: 3px solid #60a5fa;
+      animation: reboteImagen 2s infinite alternate;
+      display: block;
+    }
+    .area-juego {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-width: 0;
+    }
+    .zona-soltar {
+      border: 4px dashed #60a5fa;
+      height: 90px;
+      margin: 0 0 24px 0;
+      line-height: 90px;
+      font-size: 2em;
+      color: #555;
+      border-radius: 22px;
+      background: #e0f2fe;
+      transition: background 0.3s, border-color 0.3s, color 0.3s, box-shadow 0.3s;
+      width: 320px;
+      max-width: 90vw;
+      box-shadow: 0 2px 12px #60a5fa22;
+      animation: reboteZona 1.5s infinite alternate;
+    }
+    @keyframes reboteZona { from { transform: scale(1);} to { transform: scale(1.04);} }
+    .zona-soltar.correcto { background: #4ade80; color: white; border-color: #22c55e; box-shadow: 0 0 24px #4ade80aa; animation: popZona 0.5s; }
+    .zona-soltar.incorrecto { background: #f87171; color: white; border-color: #ef4444; box-shadow: 0 0 24px #f87171aa; animation: popZona 0.5s; }
+    @keyframes popZona { 0% { transform: scale(1.1);} 100% { transform: scale(1);} }
+    .letras-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 28px;
+      margin: 56px 0 10px 0;
+      width: 100%;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      scrollbar-width: thin;
+      scrollbar-color: #60a5fa #e0e7ef;
+    }
+    .letras-container::-webkit-scrollbar {
+      height: 8px;
+    }
+    .letras-container::-webkit-scrollbar-thumb {
+      background: #60a5fa;
+      border-radius: 4px;
+    }
+    .letra-drag {
+      background: linear-gradient(135deg, #fbbf24, #f472b6);
+      border: none;
+      margin: 0 10px;
+      font-size: 2em;
+      cursor: grab;
+      border-radius: 18px;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px #fbbf2455;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+      color: #fff;
+      font-weight: bold;
+      animation: reboteLetra 1.2s infinite alternate;
+      position: relative;
+    }
+    .letra-drag:active { transform: scale(1.18); background: #fde68a; color: #f472b6; }
+    .letra-drag:hover { background: linear-gradient(135deg, #60a5fa, #fbbf24); color: #fff; box-shadow: 0 8px 24px #60a5fa55; }
+    @keyframes reboteLetra { from { transform: scale(1);} to { transform: scale(1.08);} }
+    #puntaje, #tiempo {
+      font-size: 1.3em;
+      margin: 12px 0 0 0;
+      font-weight: bold;
+      color: #f59e0b;
+      letter-spacing: 1px;
+    }
+    #puntaje:before { content: '⭐ '; }
+    #barra-tiempo { width: 100%; }
+    #barra-tiempo {
+      height: 18px;
+      background: #e0e7ef;
+      border-radius: 10px;
+      margin: 10px 0 0 0;
+      overflow: hidden;
+      box-shadow: 0 2px 8px #60a5fa22;
+      position: relative;
+    }
+    #barra-tiempo-inner {
+      height: 100%;
+      background: linear-gradient(90deg, #60a5fa, #4ade80);
+      width: 100%;
+      transition: width 0.2s linear;
+      border-radius: 10px 0 0 10px;
+    }
+    #resultado {
+      font-size: 1.4em;
+      font-family: 'Comic Sans MS', cursive;
+      font-weight: bold;
+      min-height: 36px;
+      margin: 10px 0 0 0;
+      color: #3b82f6;
+      animation: mensajePop 0.7s;
+    }
+    @keyframes mensajePop { 0% { transform: scale(0.7); opacity: 0;} 60% { transform: scale(1.2);} 100% { transform: scale(1); opacity: 1;} }
+    .boton-volver {
+      display: block;
+      background: linear-gradient(135deg, #f97316, #fb923c);
+      color: white;
+      padding: 16px 32px;
+      font-size: 1.3em;
+      border-radius: 16px;
+      text-decoration: none;
+      margin: 32px auto 0 auto;
+      transition: all 0.3s;
+      font-weight: bold;
+      box-shadow: 0 4px 12px #f9731655;
+      max-width: 340px;
+      animation: reboteBoton 1.5s infinite alternate;
+    }
+    .boton-volver:hover { transform: scale(1.08); box-shadow: 0 8px 24px #fb923c55; }
+    @keyframes reboteBoton { from { transform: scale(1);} to { transform: scale(1.04);} }
+    .imagen-palabra {
+      width: 220px;
+      max-height: 180px;
+      object-fit: contain;
+      border-radius: 24px;
+      box-shadow: 0 4px 16px #60a5fa33;
+      margin: 0 auto 18px auto;
+      display: block;
+      background: #fff;
+      border: 3px solid #60a5fa;
+      animation: reboteImagen 2s infinite alternate;
+    }
+    @keyframes reboteImagen { from { transform: translateY(0);} to { transform: translateY(-8px);} }
+    .contenedor-flex-niveles {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 32px;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .cuadro-nivel {
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 4px 24px #60a5fa22;
+      padding: 32px 36px;
+      min-width: 180px;
+      min-height: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Comic Sans MS', cursive;
+      font-size: 1.3em;
+      color: #2563eb;
+      font-weight: bold;
+      margin-top: 40px;
+      z-index: 1;
+      border: 3px solid #a7e9fb;
+      position: relative;
+    }
+    .titulo-nivel {
+      font-size: 1.1em;
+      margin-bottom: 12px;
+      color: #60a5fa;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .valor-nivel {
+      font-size: 2.2em;
+      color: #22c55e;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .total-niveles {
+      font-size: 1.1em;
+      color: #888;
+      font-weight: normal;
+    }
+    @media (max-width: 1000px) {
+      .contenedor-flex-niveles {
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+      }
+      .cuadro-nivel {
+        margin-top: 0;
+        min-width: 120px;
+        padding: 18px 18px;
+      }
+    }
+    @media (max-width: 800px) {
+      .contenedor-juego-divertido-flex {
+        flex-direction: column;
+        align-items: center;
+        max-width: 98vw;
+        padding: 18px 4vw 18px 4vw;
+        gap: 18px;
+      }
+      .imagen-palabra {
+        width: 160px;
+        max-height: 120px;
+      }
+      .zona-soltar {
+        width: 90vw;
+        min-width: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="fondo-animado">
+    <div class="burbuja burbuja1"></div>
+    <div class="burbuja burbuja2"></div>
+    <div class="burbuja burbuja3"></div>
+    <div class="burbuja burbuja4"></div>
+    <div class="burbuja burbuja5"></div>
+  </div>
+  <div class="encabezado">
+    <h1>🎈 Juego 3: Arrastra la letra 🎈</h1>
+    <p>Arrastra la letra correcta antes de que termine el tiempo</p>
+  </div>
+  <div class="contenedor-flex-niveles">
+    <div class="contenedor-juego-divertido-flex">
+      <img id="imagenPalabra" class="imagen-palabra" src="" alt="Imagen" />
+      <div class="area-juego">
+        <div id="zona-soltar" class="zona-soltar">Suelta aquí la letra inicial</div>
+        <div id="letras" class="letras-container"></div>
+        <div id="resultado"></div>
+        <div id="puntaje">0</div>
+        <div id="tiempo">15s</div>
+        <div id="barra-tiempo"><div id="barra-tiempo-inner"></div></div>
+      </div>
+    </div>
+    <div class="cuadro-nivel">
+      <div class="titulo-nivel">Nivel actual</div>
+      <div class="valor-nivel">Nivel <span id="nivel-actual">1</span></div>
+      <div class="total-niveles">de 20</div>
+    </div>
+  </div>
+  <a href="../juegos.html" class="boton-volver">⏪ Volver al menú de juegos</a>
+  <audio id="sonido-correcto" src="../audio/correcto.mp3"></audio>
+  <audio id="sonido-incorrecto" src="../audio/incorrecto.mp3"></audio>
+  <audio id="sonido-tiempo" src="../audio/tiempo.mp3"></audio>
+  <script src="juego3.js"></script>
+</body>
+</html>

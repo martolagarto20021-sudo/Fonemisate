@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fonemas del Abecedario</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-image: url('img/Fondo.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .panel-abecedario {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 25px;
+      padding: 24px;
+      max-width: 950px;
+      margin: 8px auto;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      border: 4px solid #fa1515;
+    }
+
+    #titulo {
+      font-size: 2.7vw;
+      color: #f97316;
+      margin-bottom: 1.2vw;
+      text-shadow: 1px 1px 3px #c75b0c;
+    }
+
+    .grid-letras {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.3vw;
+      margin: 0 auto 2vw auto;
+      max-width: 950px;
+    }
+
+    .letra {
+      width: 4.7vw;
+      height: 4.7vw;
+      min-width: 48px;
+      min-height: 48px;
+      border-radius: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2vw;
+      font-weight: 900;
+      color: #4a4a4a;
+      text-shadow: 0 1px 2px rgba(255 255 255 / 0.7);
+      border: 3px solid transparent;
+      box-shadow:
+        inset 0 -4px 8px rgba(255 255 255 / 0.6),
+        3px 3px 8px rgba(0 0 0 / 0.15);
+      cursor: pointer;
+      user-select: none;
+      transition:
+        background-color 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Colores pastel para cada letra */
+    .letra:nth-child(1) { background-color: #f9d5e5; border-color: #e2a9c9; }
+    .letra:nth-child(2) { background-color: #fce1a8; border-color: #e4cb6b; }
+    .letra:nth-child(3) { background-color: #a7d8de; border-color: #75a7af; }
+    .letra:nth-child(4) { background-color: #c3e7bb; border-color: #89b66e; }
+    .letra:nth-child(5) { background-color: #ffd8be; border-color: #e6af7f; }
+    .letra:nth-child(6) { background-color: #f6b8b8; border-color: #d77a7a; }
+    .letra:nth-child(7) { background-color: #e4c1f9; border-color: #b89eed; }
+    .letra:nth-child(8) { background-color: #fff7bd; border-color: #e2d879; }
+    .letra:nth-child(9) { background-color: #b0d0d3; border-color: #6f9ea4; }
+    .letra:nth-child(10) { background-color: #a3d9a5; border-color: #5d9752; }
+    .letra:nth-child(11) { background-color: #f3c6b8; border-color: #d8987c; }
+    .letra:nth-child(12) { background-color: #d8f3dc; border-color: #a4be9e; }
+    .letra:nth-child(13) { background-color: #fce9d8; border-color: #e2b88a; }
+    .letra:nth-child(14) { background-color: #ffc8dd; border-color: #e493a4; }
+    .letra:nth-child(15) { background-color: #d0f4de; border-color: #86c299; }
+    .letra:nth-child(16) { background-color: #c5dedd; border-color: #9ac1c0; }
+    .letra:nth-child(17) { background-color: #ffecd1; border-color: #e8be7b; }
+    .letra:nth-child(18) { background-color: #d6cbd3; border-color: #a393a5; }
+    .letra:nth-child(19) { background-color: #fae3d9; border-color: #d9b3a5; }
+    .letra:nth-child(20) { background-color: #caf7e3; border-color: #84b9a7; }
+    .letra:nth-child(21) { background-color: #b4e0e1; border-color: #7aa1a3; }
+    .letra:nth-child(22) { background-color: #f2c6b6; border-color: #d4917a; }
+    .letra:nth-child(23) { background-color: #c0b9dd; border-color: #9789b7; }
+    .letra:nth-child(24) { background-color: #d3e5ff; border-color: #a2b8db; }
+    .letra:nth-child(25) { background-color: #fff3b0; border-color: #e2db79; }
+    .letra:nth-child(26) { background-color: #e3f6f5; border-color: #9ad1d1; }
+
+    .letra:hover {
+      filter: brightness(1.1);
+      transform: scale(1.2) rotate(-8deg);
+      box-shadow:
+        0 0 14px 3px rgba(255 255 255 / 0.7),
+        0 0 25px 5px rgba(0 0 0 / 0.15);
+      border-color: #fff;
+      z-index: 10;
+    }
+
+    .letra:active {
+      transform: scale(0.95) rotate(0deg);
+      box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.2);
+      border-color: transparent;
+    }
+
+    /* Botón principal */
+    .boton-menu-principal {
+      background: linear-gradient(135deg, #3b82f6, #60a5fa);
+      border: 3px solid #60a5fa;
+      color: white;
+      font-weight: 900;
+      font-size: 1.1vw; /* antes 1.3vw, más pequeño para que quepa el texto */
+      padding: 0 18px; /* padding horizontal para más espacio */
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow:
+        0 8px 15px rgba(0, 0, 0, 0.3),
+        inset 0 -3px 5px rgba(0, 0, 0, 0.15);
+      transition: all 0.4s ease;
+      user-select: none;
+      text-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+      margin-top: 1vw;
+      display: block;
+      min-width: 180px; /* más ancho mínimo */
+      max-width: 100%;
+      height: auto;
+      white-space: normal; /* permite salto de línea si es necesario */
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .boton-menu-principal:hover {
+      background: linear-gradient(135deg, #60a5fa, #3b82f6);
+      box-shadow:
+        0 12px 25px rgba(0, 0, 0, 0.5),
+        inset 0 -5px 7px rgba(0, 0, 0, 0.3);
+      transform: scale(1.1) rotate(-3deg);
+    }
+
+    .boton-menu-principal:active {
+      transform: scale(0.95) rotate(0deg);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    #contenido-fonema {
+      margin-top: 1vw;
+      display: none;
+    }
+    #contenido-fonema .fila-letra-boca {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2vw;
+      margin-bottom: 1vw;
+    }
+    #contenido-fonema .fila-letra-boca img {
+      width: 170px;
+      height: 170px;
+      object-fit: contain;
+      border-radius: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+      background: #fff;
+    }
+    #contenido-fonema .audio-fonema {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5vw;
+    }
+    #contenido-fonema #ejemplo-titulo {
+      margin-top: 0.5vw;
+      margin-bottom: 0.5vw;
+      font-size: 1.7vw;
+      color: #f97316;
+      font-weight: bold;
+    }
+    #contenido-fonema .ejemplos-tarjetas {
+      display: flex;
+      justify-content: center;
+      gap: 2vw;
+      margin-bottom: 1vw;
+    }
+    #contenido-fonema .ejemplo-tarjeta {
+      background: #fff8ee;
+      border-radius: 22px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.13);
+      padding: 18px 12px 10px 12px;
+      width: 280px;
+      min-width: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #contenido-fonema .ejemplo-tarjeta img {
+      width: 270px;
+      height: 270px;
+      object-fit: contain;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+      margin-bottom: 6px;
+    }
+    #contenido-fonema .ejemplo-tarjeta p {
+      margin: 0 0 4px 0;
+      font-size: 1.2vw;
+      font-weight: bold;
+      color: #b97a2b;
+    }
+    #contenido-fonema .ejemplo-tarjeta span, #contenido-fonema .ejemplo-tarjeta strong {
+      font-size: 1.3vw;
+      color: #3b3b3b;
+      text-align: center;
+      display: block;
+    }
+    #contenido-fonema .contenedor-volver {
+      display: flex;
+      justify-content: center;
+      gap: 2vw;
+      margin-top: 1.5vw;
+      margin-bottom: 0.5vw;
+    }
+    #contenido-fonema .boton-menu-principal, #contenido-fonema .btn-peq {
+      min-width: 180px;
+      font-size: 1.2vw;
+      padding: 12px 20px;
+      border-radius: 22px;
+      font-weight: bold;
+    }
+    #contenido-fonema .imagenes-fonema img {
+      width: 170px;
+      height: 170px;
+      object-fit: contain;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+      margin-bottom: 6px;
+    }
+    #contenido-fonema .imagenes-fonema > div > img {
+      width: 260px;
+      height: 260px;
+      object-fit: contain;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+      margin-bottom: 6px;
+    }
+    #contenido-fonema .fila-letra-boca {
+      margin-bottom: 0.5vw;
+    }
+    #contenido-fonema .audio-fonema {
+      margin-bottom: 0.7vw;
+    }
+    #contenido-fonema #ejemplo-titulo {
+      margin-top: 0.2vw;
+      margin-bottom: 0.2vw;
+    }
+    #contenido-fonema .ejemplos-tarjetas {
+      gap: 1vw;
+      margin-bottom: 0.5vw;
+    }
+    #contenido-fonema .contenedor-volver {
+      margin-top: 0.7vw;
+      margin-bottom: 0.2vw;
+    }
+    .boton-menu-principal, #contenido-fonema .boton-menu-principal, #contenido-fonema .boton-principal, #contenido-fonema .btn-peq {
+      background: linear-gradient(135deg, #3b82f6, #60a5fa);
+      border: 3px solid #60a5fa;
+      color: white;
+      font-weight: 900;
+      font-size: 1.4vw;
+      padding: 12px 32px;
+      border-radius: 32px;
+      cursor: pointer;
+      box-shadow:
+        0 8px 15px rgba(0, 0, 0, 0.3),
+        inset 0 -3px 5px rgba(0, 0, 0, 0.15);
+      transition: all 0.4s ease;
+      user-select: none;
+      text-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+      margin-top: 1vw;
+      display: block;
+      min-width: 200px;
+      max-width: 100%;
+      height: auto;
+      white-space: normal;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .boton-menu-principal:hover, #contenido-fonema .boton-menu-principal:hover, #contenido-fonema .boton-principal:hover, #contenido-fonema .btn-peq:hover {
+      background: linear-gradient(135deg, #60a5fa, #3b82f6);
+      box-shadow:
+        0 12px 25px rgba(0, 0, 0, 0.5),
+        inset 0 -5px 7px rgba(0, 0, 0, 0.3);
+      transform: scale(1.1) rotate(-3deg);
+    }
+    .boton-menu-principal:active, #contenido-fonema .boton-menu-principal:active, #contenido-fonema .boton-principal:active, #contenido-fonema .btn-peq:active {
+      transform: scale(0.95) rotate(0deg);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+    }
+    .audio-player {
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, #a7c7ff 0%, #e0c3fc 100%);
+      border-radius: 40px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+      padding: 8px 14px;
+      gap: 10px;
+      margin: 0 auto 1vw auto;
+      max-width: 340px;
+    }
+    .audio-btn {
+      background: linear-gradient(135deg, #60a5fa, #b983ff);
+      border: none;
+      color: #fff;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      outline: none;
+      position: relative;
+    }
+    .audio-btn svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
+    .audio-bar {
+      width: 90px;
+      height: 14px;
+      border-radius: 10px;
+      background: #fcb1b1;
+      accent-color: #b1e0fc;
+      outline: none;
+      margin: 0 4px;
+      box-shadow: 0 1px 4px #e0c3fc66;
+    }
+    .audio-time {
+      font-family: 'Comic Sans MS', cursive;
+      font-size: 0.95rem;
+      color: #b983ff;
+      min-width: 32px;
+      text-align: center;
+    }
+    .audio-volume-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .audio-volume-bar {
+      width: 70px;
+      height: 10px;
+      border-radius: 8px;
+      background: #e0c3fc;
+      accent-color: #60a5fa;
+      outline: none;
+      margin-left: 6px;
+      vertical-align: middle;
+      position: absolute;
+      left: 50%;
+      top: 48px;
+      transform: translateX(-50%);
+      box-shadow: 0 1px 4px #e0c3fc66;
+      display: none;
+      z-index: 10;
+    }
+    .audio-volume-bar.show {
+      display: block;
+      animation: fadeInVol 0.2s;
+    }
+    @keyframes fadeInVol {
+      from { opacity: 0; transform: translateX(-50%) scaleY(0.7); }
+      to { opacity: 1; transform: translateX(-50%) scaleY(1); }
+    }
+    .audio-btn.volume {
+      background: linear-gradient(135deg, #60a5fa, #b983ff);
+      border: none;
+      color: #fff;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      outline: none;
+      position: relative;
+    }
+    .audio-btn.volume svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="panel-abecedario" id="panel">
+    <h1 id="titulo"> Fonemas del Abecedario</h1>
+
+    <div id="contenido-letras" class="grid-letras">
+      <script>
+        const letras = 'ABCDEFGIJKLMNÑOPQRSTUVXYZ'.split('');
+        document.write(
+          letras.map(letra =>
+            `<button class="letra" onclick="mostrarContenido('${letra}')">${letra}</button>`
+          ).join('')
+        );
+      </script>
+      <button class="boton-menu-principal" onclick="volverPaginaPrincipal()">🏠 Página Principal</button>
+    </div>
+
+    <div id="contenido-fonema" class="menu-fonema">
+      <div class="fila-letra-boca">
+        <img id="img-letra" src="" alt="Letra" />
+        <img id="img-boca" src="" alt="Boca al pronunciar" />
+      </div>
+      <!-- Reproductor personalizado igual que en vocales -->
+      <div class="audio-fonema">
+        <div id="audio-player" class="audio-player">
+          <button id="play-pause" class="audio-btn" aria-label="Reproducir/Pausar">
+            <svg id="icon-play" viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="16" fill="url(#grad1)"/>
+              <polygon points="12,8 26,16 12,24" fill="#fff"/>
+              <defs>
+                <linearGradient id="grad1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#60a5fa"/>
+                  <stop offset="1" stop-color="#b983ff"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <svg id="icon-pause" viewBox="0 0 32 32" fill="none" style="display:none;">
+              <circle cx="16" cy="16" r="16" fill="url(#grad2)"/>
+              <rect x="10" y="8" width="4" height="16" rx="2" fill="#fff"/>
+              <rect x="18" y="8" width="4" height="16" rx="2" fill="#fff"/>
+              <defs>
+                <linearGradient id="grad2" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#60a5fa"/>
+                  <stop offset="1" stop-color="#b983ff"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </button>
+          <span id="current-time" class="audio-time">0:00</span>
+          <input type="range" id="progress-bar" class="audio-bar" value="0" min="0" max="100" step="1">
+          <span id="duration" class="audio-time">0:00</span>
+          <div class="audio-volume-group">
+            <button id="volume-btn" class="audio-btn volume" aria-label="Volumen">
+              <svg id="icon-volume" viewBox="0 0 32 32" fill="none">
+                <circle cx="16" cy="16" r="16" fill="url(#gradvol)"/>
+                <rect x="7" y="13" width="7" height="6" rx="2" fill="#fff"/>
+                <polygon points="14,11 20,16 14,21" fill="#fff"/>
+                <path d="M22 13 Q25 16 22 19" stroke="#fff" stroke-width="2" fill="none"/>
+                <defs>
+                  <linearGradient id="gradvol" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#60a5fa"/>
+                    <stop offset="1" stop-color="#b983ff"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </button>
+            <input type="range" id="volume-bar" class="audio-volume-bar" value="100" min="0" max="100" step="1">
+          </div>
+        </div>
+        <audio id="audio-letra" preload="auto"></audio>
+      </div>
+      <h2 id="ejemplo-titulo">Ejemplos en distintas posiciones</h2>
+      <div class="ejemplos-tarjetas">
+        <div class="ejemplo-tarjeta">
+          <p>Inicio</p>
+          <img id="img-inicio" src="" alt="Ejemplo inicio" />
+        </div>
+        <div class="ejemplo-tarjeta">
+          <p>Medio</p>
+          <img id="img-medio" src="" alt="Ejemplo medio" />
+        </div>
+        <div class="ejemplo-tarjeta">
+          <p>Final</p>
+          <img id="img-final" src="" alt="Ejemplo final" />
+        </div>
+      </div>
+
+      <div class="contenedor-volver">
+        <button class="boton-menu-principal" onclick="volverAlAbecedario()">🔙 Volver al Abecedario</button>
+        <button class="boton-menu-principal" onclick="volverPaginaPrincipal()">🏠 Página Principal</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function mostrarContenido(letra) {
+      document.getElementById('titulo').innerText = `🔡 Fonema de la letra "${letra}"`;
+      document.getElementById('contenido-letras').style.display = 'none';
+      document.getElementById('contenido-fonema').style.display = 'block';
+
+      const letraLower = letra.toLowerCase();
+      document.getElementById('img-letra').src = `img/letras/${letraLower}.png`;
+      document.getElementById('img-boca').src = `img/boca/${letraLower}.png`;
+      document.getElementById('audio-letra').src = `audio/${letraLower}.mp3`;
+      document.getElementById('img-inicio').src = `img/ejemplos_inicio/${letraLower}.png`;
+      document.getElementById('img-medio').src = `img/ejemplos_medio/${letraLower}.png`;
+      document.getElementById('img-final').src = `img/ejemplos_final/${letraLower}.png`;
+    }
+
+    function volverAlAbecedario() {
+      document.getElementById('titulo').innerText = '🔤 Fonemas del Abecedario';
+      document.getElementById('contenido-letras').style.display = '';
+      document.getElementById('contenido-fonema').style.display = 'none';
+    }
+
+    function volverPaginaPrincipal() {
+      window.location.href = 'index.html';
+    }
+
+    const audio = document.getElementById('audio-letra');
+    const playPauseBtn = document.getElementById('play-pause');
+    const iconPlay = document.getElementById('icon-play');
+    const iconPause = document.getElementById('icon-pause');
+    const progressBar = document.getElementById('progress-bar');
+    const currentTimeEl = document.getElementById('current-time');
+    const durationEl = document.getElementById('duration');
+    const volumeBtn = document.getElementById('volume-btn');
+    const volumeBar = document.getElementById('volume-bar');
+    const audioVolumeGroup = document.querySelector('.audio-volume-group');
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s.toString().padStart(2, '0')}`;
+    }
+
+    playPauseBtn.onclick = function() {
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    };
+    audio.onplay = function() {
+      iconPlay.style.display = 'none';
+      iconPause.style.display = 'block';
+    };
+    audio.onpause = function() {
+      iconPlay.style.display = 'block';
+      iconPause.style.display = 'none';
+    };
+    audio.ontimeupdate = function() {
+      progressBar.value = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+      currentTimeEl.textContent = formatTime(audio.currentTime);
+    };
+    audio.onloadedmetadata = function() {
+      durationEl.textContent = formatTime(audio.duration);
+    };
+    progressBar.oninput = function() {
+      if (audio.duration) {
+        audio.currentTime = (progressBar.value / 100) * audio.duration;
+      }
+    };
+    let volBarVisible = false;
+    volumeBtn.onclick = function(e) {
+      e.stopPropagation();
+      volBarVisible = !volBarVisible;
+      if (volBarVisible) {
+        volumeBar.classList.add('show');
+      } else {
+        volumeBar.classList.remove('show');
+      }
+    };
+    volumeBar.oninput = function() {
+      audio.volume = volumeBar.value / 100;
+      audio.muted = audio.volume === 0;
+    };
+    document.addEventListener('click', function(e) {
+      if (volBarVisible && !audioVolumeGroup.contains(e.target)) {
+        volumeBar.classList.remove('show');
+        volBarVisible = false;
+      }
+    });
+  </script>
+</body>
+</html>

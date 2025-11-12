@@ -1,0 +1,10 @@
+# Ignorar todo
+*
+*/
+
+# Excepto la carpeta resources y su contenido
+!resources/
+!resources/**
+
+# Y este archivo
+!.gitignore

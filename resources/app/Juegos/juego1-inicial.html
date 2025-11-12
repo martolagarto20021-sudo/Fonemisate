@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Juego 1: ¿Con qué letra empieza?</title>
+  <link rel="stylesheet" href="juegos.css">
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .fondo-animado {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      background: linear-gradient(120deg, #a7e9fb 0%, #fbb6ce 100%);
+      animation: fondoColor 10s ease-in-out infinite alternate;
+    }
+    @keyframes fondoColor {
+      0% { background: linear-gradient(120deg, #a7e9fb 0%, #fbb6ce 100%); }
+      25% { background: linear-gradient(120deg, #b5f7ef 0%, #b8b5f7 100%); }
+      50% { background: linear-gradient(120deg, #b8b5f7 0%, #fbb6ce 100%); }
+      75% { background: linear-gradient(120deg, #a7e9fb 0%, #b5f7ef 100%); }
+      100% { background: linear-gradient(120deg, #a7e9fb 0%, #fbb6ce 100%); }
+    }
+    .burbuja {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.35;
+      pointer-events: none;
+      animation: flotar 12s linear infinite;
+    }
+    .burbuja1 { width: 120px; height: 120px; left: 10vw; bottom: -140px; background: #60a5fa; animation-delay: 0s; }
+    .burbuja2 { width: 80px; height: 80px; left: 70vw; bottom: -100px; background: #fbbf24; animation-delay: 2s; }
+    .burbuja3 { width: 100px; height: 100px; left: 40vw; bottom: -120px; background: #f472b6; animation-delay: 4s; }
+    .burbuja4 { width: 60px; height: 60px; left: 85vw; bottom: -80px; background: #4ade80; animation-delay: 6s; }
+    .burbuja5 { width: 90px; height: 90px; left: 25vw; bottom: -110px; background: #f59e42; animation-delay: 8s; }
+    @keyframes flotar {
+      0% { transform: translateY(0) scale(1); opacity: 0.35; }
+      70% { opacity: 0.5; }
+      100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+    }
+
+    .contenedor-juego {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      max-width: 950px;
+      margin: auto;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel-lateral {
+      background: rgba(255,255,255,0.95);
+      border-radius: 20px;
+      padding: 20px;
+      min-width: 160px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      font-weight: bold;
+      font-size: 22px;
+      color: #1d4ed8;
+      text-align: center;
+      border: 3px solid #facc15;
+      transition: transform 0.3s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel-lateral:hover {
+      transform: scale(1.05);
+    }
+
+    #juego-contenido {
+      flex: 1;
+      background: rgba(255,255,255,0.95);
+      border-radius: 25px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border: 4px solid #f59e0b;
+      animation: aparecer 0.8s ease;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    #imagen-palabra {
+      width: 250px;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: transform 0.3s;
+      margin-bottom: 20px;
+    }
+
+    #imagen-palabra:hover {
+      transform: scale(1.1);
+    }
+
+    #opciones button {
+      font-size: 24px;
+      padding: 15px 25px;
+      border-radius: 12px;
+      margin: 5px;
+      border: none;
+      background: #38bdf8;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    #opciones button:hover {
+      background: #0ea5e9;
+      transform: scale(1.1);
+    }
+
+    #mensaje {
+      font-size: 22px;
+      margin: 15px 0;
+      min-height: 28px;
+    }
+
+    .boton-volver {
+      display: inline-block;
+      background-color: #ef4444;
+      color: white;
+      padding: 12px 20px;
+      font-size: 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      margin-top: 20px;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .boton-volver:hover {
+      background-color: #f87171;
+      transform: scale(1.05);
+    }
+
+    @keyframes aparecer {
+      from {opacity:0; transform: translateY(20px);}
+      to {opacity:1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <div class="fondo-animado">
+    <div class="burbuja burbuja1"></div>
+    <div class="burbuja burbuja2"></div>
+    <div class="burbuja burbuja3"></div>
+    <div class="burbuja burbuja4"></div>
+    <div class="burbuja burbuja5"></div>
+  </div>
+  <div class="encabezado">
+    <h1>¿Con qué letra empieza?</h1>
+    <p>Observa la imagen y elige la letra correcta</p>
+  </div>
+
+  <div class="contenedor-juego">
+    <div class="panel-lateral" id="tiempo">⏳<br>Tiempo:<br>60s</div>
+
+    <div id="juego-contenido">
+      <img id="imagen-palabra" src="" alt="Palabra">
+      <div id="opciones"></div>
+      <p id="mensaje"></p>
+      <!-- Botón siguiente eliminado -->
+      <a href="../juegos.html" class="boton-volver">⏪ Volver al menú de juegos</a>
+    </div>
+
+    <div class="panel-lateral" id="nota">⭐<br>Puntaje:<br>0 / 20</div>
+  </div>
+
+  <script src="juego1.js"></script>
+</body>
+</html>

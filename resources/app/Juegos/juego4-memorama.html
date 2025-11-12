@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Juego 4 - Memorama Fonémico</title>
+  <link rel="stylesheet" href="juegos.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .fondo-animado-4 {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      background: linear-gradient(270deg, #fbbf24, #60a5fa, #f472b6, #4ade80, #fbb6ce, #a7e9fb, #b8b5f7, #f59e42);
+      background-size: 1600% 1600%;
+      animation: arcoirisFondo 24s ease-in-out infinite alternate;
+    }
+    @keyframes arcoirisFondo {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .emoji-flotante {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.18;
+      pointer-events: none;
+      animation: flotarEmoji 18s linear infinite;
+      font-size: 2.7em;
+      filter: drop-shadow(0 0 8px #fff8);
+    }
+    .emoji1 { left: 8vw; bottom: -120px; animation-delay: 0s; }
+    .emoji2 { left: 55vw; bottom: -100px; animation-delay: 4s; }
+    .emoji3 { left: 30vw; bottom: -140px; animation-delay: 8s; }
+    .emoji4 { left: 75vw; bottom: -90px; animation-delay: 12s; }
+    .emoji5 { left: 20vw; bottom: -110px; animation-delay: 15s; }
+    @keyframes flotarEmoji {
+      0% { transform: translateY(0) scale(1); opacity: 0.18; }
+      70% { opacity: 0.28; }
+      100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+    }
+    .burbuja-memo {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.22;
+      pointer-events: none;
+      animation: flotarMemo 16s linear infinite;
+    }
+    .burbuja-memo1 { width: 120px; height: 120px; left: 10vw; bottom: -140px; background: #60a5fa; animation-delay: 0s; }
+    .burbuja-memo2 { width: 80px; height: 80px; left: 70vw; bottom: -100px; background: #fbbf24; animation-delay: 3s; }
+    .burbuja-memo3 { width: 100px; height: 100px; left: 40vw; bottom: -120px; background: #f472b6; animation-delay: 6s; }
+    .burbuja-memo4 { width: 60px; height: 60px; left: 85vw; bottom: -80px; background: #4ade80; animation-delay: 8s; }
+    .burbuja-memo5 { width: 90px; height: 90px; left: 25vw; bottom: -110px; background: #f59e42; animation-delay: 11s; }
+    @keyframes flotarMemo {
+      0% { transform: translateY(0) scale(1); opacity: 0.22; }
+      70% { opacity: 0.35; }
+      100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+    }
+    .contenedor-memorama {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 24px;
+      border-radius: 24px;
+      max-width: 1300px;
+      margin: 20px auto;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+      animation: aparecer 0.5s ease;
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    @keyframes aparecer {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .grid-cartas {
+      display: grid;
+      gap: 18px;
+      margin-top: 24px;
+      justify-content: center;
+      width: 100%;
+      max-width: 1200px;
+      min-height: 220px;
+      overflow-x: auto;
+      grid-auto-rows: 100px;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+
+    .carta {
+      width: 100px;
+      height: 100px;
+      background: #60a5fa;
+      border-radius: 16px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transform: scale(1);
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+    }
+
+    .carta:hover {
+      transform: scale(1.12);
+      box-shadow: 0 0 16px #2563eb;
+    }
+
+    .carta img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      pointer-events: none;
+    }
+
+    .carta.revelada img {
+      display: block;
+      animation: aparecerCarta 0.3s ease;
+    }
+
+    @keyframes aparecerCarta {
+      from {
+        transform: scale(0.6);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    #puntaje,
+    #tiempo {
+      font-size: 18px;
+      margin: 10px;
+    }
+
+    #barra-tiempo {
+      height: 10px;
+      background: #34d399;
+      border-radius: 5px;
+      margin-top: 5px;
+      transition: width 0.5s, background 0.5s;
+    }
+
+    .boton-volver {
+      display: inline-block;
+      background-color: #3b82f6;
+      color: white;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      margin-top: 20px;
+      transition: background 0.3s;
+    }
+
+    .boton-volver:hover {
+      background-color: #2563eb;
+    }
+
+    #btn-reiniciar {
+      font-size: 17px !important;
+      padding: 10px 22px !important;
+      margin-top: 10px !important;
+    }
+
+    .contador-divertido {
+      font-size: 2.1em !important;
+      color: #10b981;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: color 0.3s;
+    }
+    .contador-divertido .icono {
+      font-size: 2.2em;
+      display: block;
+      margin-bottom: -6px;
+    }
+    .puntaje-animado {
+      animation: rebotePuntaje 0.7s;
+    }
+    @keyframes rebotePuntaje {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.25) rotate(-8deg); }
+      60% { transform: scale(0.95) rotate(6deg); }
+      100% { transform: scale(1); }
+    }
+    .barra-tiempo-divertida {
+      width: 90px;
+      height: 13px;
+      background: #e0e7ef;
+      border-radius: 7px;
+      overflow: hidden;
+      margin-top: 2px;
+      box-shadow: 0 2px 6px rgba(16,185,129,0.12);
+    }
+    .barra-tiempo-divertida-inner {
+      height: 100%;
+      background: linear-gradient(90deg,#10b981,#facc15,#ef4444);
+      border-radius: 7px;
+      transition: width 0.4s, background 0.4s;
+    }
+    .contenedor-memorama, .contador-divertido, .boton-volver, #btn-reiniciar, #tiempo, #puntaje, #nivelActual, #mensaje, .barra-tiempo-divertida, .barra-tiempo-divertida-inner {
+      position: relative;
+      z-index: 1;
+    }
+    .panel-lateral-memo {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+      padding: 18px 12px;
+      min-width: 120px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Rebote y sombra mejorada en paneles y cartas */
+    .panel-lateral-memo {
+      animation: rebotePanel 2.2s infinite alternate;
+      box-shadow: 0 6px 24px #60a5fa33, 0 2px 12px rgba(0,0,0,0.10);
+      border: 4px solid;
+      border-image: linear-gradient(90deg, #fbbf24, #60a5fa, #f472b6, #4ade80) 1;
+      transition: box-shadow 0.3s, border-color 1s;
+    }
+    @keyframes rebotePanel {
+      from { transform: translateY(0); }
+      to { transform: translateY(-10px); }
+    }
+    .contenedor-memorama {
+      box-shadow: 0 8px 32px #fbbf24aa, 0 2px 12px #60a5fa55;
+      animation: reboteContenedor 2.5s infinite alternate;
+    }
+    @keyframes reboteContenedor {
+      from { transform: scale(1); }
+      to { transform: scale(1.02); }
+    }
+    /* Cartas con efecto pop al hover */
+    .carta {
+      transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+      box-shadow: 0 4px 16px #60a5fa55, 0 2px 8px #fbbf2455;
+      background: linear-gradient(135deg, #60a5fa 60%, #fbbf24 100%);
+    }
+    .carta:hover {
+      transform: scale(1.15) rotate(-3deg);
+      box-shadow: 0 8px 32px #fbbf24aa, 0 2px 12px #60a5fa55;
+      background: linear-gradient(135deg, #fbbf24 60%, #60a5fa 100%);
+      z-index: 2;
+    }
+    /* Stickers decorativos en las esquinas */
+    .sticker-memo {
+      position: fixed;
+      z-index: 3;
+      width: 70px;
+      height: 70px;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+    .sticker-memo.top-left { top: 10px; left: 10px; }
+    .sticker-memo.top-right { top: 10px; right: 10px; }
+    .sticker-memo.bottom-left { bottom: 10px; left: 10px; }
+    .sticker-memo.bottom-right { bottom: 10px; right: 10px; }
+
+    /* Botones de letras personalizados para memorama */
+    .boton-letra-memo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      margin: 6px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, #fbbf24, #60a5fa);
+      color: #fff;
+      font-size: 2em;
+      font-weight: bold;
+      box-shadow: 0 4px 16px #60a5fa55, 0 2px 8px #fbbf2455;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s, background 0.3s;
+      outline: none;
+      position: relative;
+      z-index: 2;
+      animation: reboteLetraMemo 1.2s infinite alternate;
+    }
+    .boton-letra-memo:hover {
+      background: linear-gradient(135deg, #60a5fa, #fbbf24);
+      color: #fff;
+      transform: scale(1.18) rotate(-6deg);
+      box-shadow: 0 8px 24px #60a5fa55;
+    }
+    @keyframes reboteLetraMemo { from { transform: scale(1);} to { transform: scale(1.08);} }
+
+    @media (max-width: 900px) {
+      .contenedor-memorama { max-width: 99vw; }
+      .grid-cartas { max-width: 99vw; }
+      .carta { width: 15vw; height: 15vw; min-width: 60px; min-height: 60px; }
+    }
+    @media (max-width: 600px) {
+      .carta { width: 22vw; height: 22vw; min-width: 40px; min-height: 40px; }
+    }
+  </style>
+</head>
+
+<body style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;overflow:hidden;">
+  <!-- Stickers decorativos -->
+  <span class="sticker-memo top-left">🎲</span>
+  <span class="sticker-memo top-right">🧩</span>
+  <span class="sticker-memo bottom-left">🎉</span>
+  <span class="sticker-memo bottom-right">🌟</span>
+  <div class="fondo-animado-4">
+    <span class="emoji-flotante emoji1">😃</span>
+    <span class="emoji-flotante emoji2">🎈</span>
+    <span class="emoji-flotante emoji3">🌈</span>
+    <span class="emoji-flotante emoji4">🥳</span>
+    <span class="emoji-flotante emoji5">✨</span>
+  </div>
+  <div class="encabezado" style="margin-bottom:10px;">
+    <h1>🎯 Juego 4: Memorama Fonémico 🎯</h1>
+    <p>Empareja imágenes que empiezan con la misma letra. ¡Supera los niveles!</p>
+  </div>
+
+  <div style="display:flex;flex-direction:row;align-items:stretch;justify-content:center;width:100%;max-width:1400px;gap:18px;">
+    <div class="panel-lateral-memo">
+      <div id="tiempo" class="contador-divertido"><span class="icono">⏳</span><span id="tiempo-num">60</span>s</div>
+      <div class="barra-tiempo-divertida"><div id="barra-tiempo" class="barra-tiempo-divertida-inner" style="width:90px;"></div></div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0;">
+      <div class="contenedor-memorama" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0;max-height:90vh;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+          <div id="nivelActual" style="font-size:18px;margin-bottom:8px;">Nivel: 1</div>
+          <div class="grid-cartas" id="gridCartas" style="flex:1;align-items:center;justify-content:center;max-height:50vh;overflow-y:auto;"></div>
+          <div id="mensaje" style="min-height:38px;font-size:1.2em;display:flex;align-items:center;justify-content:center;text-align:center;"></div>
+          <button id="btn-reiniciar" style="display:none;margin:10px 0 0 0;padding:12px 24px;font-size:18px;border-radius:10px;background:#10b981;color:white;border:none;cursor:pointer;">🔄 Volver a empezar</button>
+          <a href="../juegos.html" class="boton-volver">⏪ Volver al menú de juegos</a>
+        </div>
+      </div>
+    </div>
+    <div class="panel-lateral-memo">
+      <div id="puntaje" class="contador-divertido"><span class="icono">⭐</span><span id="puntaje-num">0</span></div>
+    </div>
+  </div>
+
+  <audio id="sonido-correcto" src="../audio/correcto.mp3"></audio>
+  <audio id="sonido-incorrecto" src="../audio/incorrecto.mp3"></audio>
+  <audio id="sonido-tiempo" src="../audio/tiempo.mp3"></audio>
+
+  <!-- CAMBIO IMPORTANTE: ruta correcta al JS -->
+  <script src="juego4.js"></script>
+</body>
+
+</html>

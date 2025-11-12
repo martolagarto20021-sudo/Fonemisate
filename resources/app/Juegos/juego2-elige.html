@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Juego 2: Escucha y elige</title>
+  <link rel="stylesheet" href="juegos.css" />
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .fondo-animado-2 {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      background: linear-gradient(120deg, #fbb6ce 0%, #a7e9fb 100%);
+      animation: fondoColor2 12s ease-in-out infinite alternate;
+    }
+    @keyframes fondoColor2 {
+      0% { background: linear-gradient(120deg, #fbb6ce 0%, #a7e9fb 100%); }
+      25% { background: linear-gradient(120deg, #fbbf24 0%, #60a5fa 100%); }
+      50% { background: linear-gradient(120deg, #b8b5f7 0%, #fbb6ce 100%); }
+      75% { background: linear-gradient(120deg, #a7e9fb 0%, #4ade80 100%); }
+      100% { background: linear-gradient(120deg, #fbb6ce 0%, #a7e9fb 100%); }
+    }
+    .estrella {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.22;
+      pointer-events: none;
+      animation: flotarEstrella 14s linear infinite;
+      background: none;
+      font-size: 2.5em;
+      filter: drop-shadow(0 0 8px #fff8);
+    }
+    .estrella1 { left: 12vw; bottom: -120px; animation-delay: 0s; }
+    .estrella2 { left: 60vw; bottom: -100px; animation-delay: 3s; }
+    .estrella3 { left: 35vw; bottom: -140px; animation-delay: 6s; }
+    .estrella4 { left: 80vw; bottom: -90px; animation-delay: 8s; }
+    .estrella5 { left: 25vw; bottom: -110px; animation-delay: 11s; }
+    @keyframes flotarEstrella {
+      0% { transform: translateY(0) scale(1); opacity: 0.22; }
+      70% { opacity: 0.35; }
+      100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+    }
+
+    .contenedor-juego {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      max-width: 950px;
+      margin: auto;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel-lateral {
+      background: rgba(255,255,255,0.95);
+      border-radius: 20px;
+      padding: 20px;
+      min-width: 160px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      font-weight: bold;
+      font-size: 22px;
+      color: #353c61;
+      text-align: center;
+      border: 3px solid #a9d336;
+      transition: transform 0.3s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel-lateral:hover {
+      transform: scale(1.05);
+    }
+
+    #juego-contenido {
+      flex: 1;
+      background: rgba(255,255,255,0.95);
+      border-radius: 25px;
+      padding: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      animation: aparecer 0.8s ease;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    #opciones button {
+      font-size: 24px;
+      padding: 15px 25px;
+      border-radius: 12px;
+      margin: 5px;
+      border: none;
+      background: #00acac;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    #opciones button:hover {
+      background: #8be8ff;
+      transform: scale(1.1);
+    }
+
+    #mensaje {
+      font-size: 22px;
+      margin: 15px 0;
+      min-height: 28px;
+    }
+
+    .boton-reproducir, .boton-siguiente {
+      background-color: #38a72e;
+      color: white;
+      padding: 15px 25px;
+      font-size: 20px;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      margin: 10px 5px 0 5px;
+      min-width: 180px;
+      display: inline-block;
+    }
+
+    .boton-reproducir:hover, .boton-siguiente:hover {
+      background: #21d310;
+      transform: scale(1.05);
+    }
+
+    .boton-volver {
+      display: inline-block;
+      background-color: #00999e;
+      color: white;
+      padding: 12px 20px;
+      font-size: 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      margin-top: 30px;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .boton-volver:hover {
+      background-color: #55f1fc;
+      transform: scale(1.05);
+    }
+
+    @keyframes aparecer {
+      from {opacity:0; transform: translateY(20px);}
+      to {opacity:1; transform: translateY(0);}
+    }
+    .vidas-dinamicas {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.5em;
+      gap: 0.2em;
+      margin: 10px 0 0 0;
+      min-height: 1.5em;
+      transition: color 0.3s;
+    }
+    .vidas-dinamicas .corazon {
+      display: inline-block;
+      animation: reboteVida 0.7s;
+      transition: color 0.3s, filter 0.3s;
+      filter: drop-shadow(0 2px 6px #ff6b6b88);
+    }
+    .vidas-dinamicas .corazon.perdida {
+      color: #bbb;
+      filter: grayscale(1) brightness(1.5);
+      animation: perderVida 0.7s;
+    }
+    @keyframes reboteVida {
+      0% { transform: scale(1) translateY(0); }
+      30% { transform: scale(1.2) translateY(-10px); }
+      60% { transform: scale(0.95) translateY(2px); }
+      100% { transform: scale(1) translateY(0); }
+    }
+    @keyframes perderVida {
+      0% { color: #ff6b6b; filter: none; }
+      50% { color: #bbb; filter: grayscale(1) brightness(1.5); transform: scale(1.3); }
+      100% { color: #bbb; filter: grayscale(1) brightness(1.5); transform: scale(1); }
+    }
+    .texto-vidas {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-size: 1.1em;
+      color: #38a72e;
+      margin-top: 2px;
+      letter-spacing: 1px;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px #fff8;
+    }
+    .panel-progreso {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 10px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 15px;
+      padding: 10px 20px 5px 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      border: 2px solid #ff6b6b;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .titulo-progreso {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-size: 1em;
+      font-weight: bold;
+      color: #353c61;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .boton-siguiente {
+      display: none;
+    }
+    /* Paneles laterales coloridos y animados */
+    .panel-tiempo { border-color: #60a5fa; background: #e0f2fe; animation: panelBounce 2s infinite alternate; }
+    .panel-vidas { border-color: #34d399; background: #d1fae5; animation: panelBounce 2.2s infinite alternate; }
+    .panel-puntaje { border-color: #facc15; background: #fef9c3; animation: panelBounce 2.4s infinite alternate; }
+    @keyframes panelBounce { from { transform: translateY(0);} to { transform: translateY(-6px);} }
+    /* Corazones animados */
+    .vidas-dinamicas .corazon { animation: latido 1.2s infinite; font-size: 1.2em; }
+    @keyframes latido { 0%, 100% { transform: scale(1);} 20% { transform: scale(1.2);} 40% { transform: scale(0.95);} 60% { transform: scale(1.1);} 80% { transform: scale(0.98);} }
+    /* Botón de sonido divertido */
+    .boton-reproducir { background: linear-gradient(90deg, #34d399, #60a5fa); font-size: 1.5em; border-radius: 30px; box-shadow: 0 4px 16px #60a5fa55; transition: transform 0.2s, box-shadow 0.2s; margin: 18px 0; }
+    .boton-reproducir:hover { transform: scale(1.08) rotate(-2deg); box-shadow: 0 8px 24px #34d39955; }
+    .icono-altavoz { display: inline-block; animation: vibrarAltavoz 1.2s infinite; }
+    @keyframes vibrarAltavoz { 0%,100%{transform:rotate(0);} 20%{transform:rotate(-15deg);} 40%{transform:rotate(10deg);} 60%{transform:rotate(-8deg);} 80%{transform:rotate(8deg);} }
+    /* Opciones de letras */
+    .opciones-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 18px; margin: 25px 0; }
+    .opciones-container button { border-radius: 50%; width: 70px; height: 70px; font-size: 2em; background: linear-gradient(135deg, #fbbf24, #f472b6); box-shadow: 0 2px 8px #fbbf2455; margin: 10px; transition: transform 0.2s, box-shadow 0.2s; border: none; color: #fff; font-weight: bold; }
+    .opciones-container button:hover { background: linear-gradient(135deg, #60a5fa, #fbbf24); transform: scale(1.15) rotate(-5deg); box-shadow: 0 6px 18px #60a5fa55; }
+    /* Mensajes grandes y animados */
+    .mensaje-juego { font-size: 2em; font-family: 'Comic Sans MS', cursive; padding: 10px 0; min-height: 40px; animation: mensajePop 0.7s; }
+    @keyframes mensajePop { 0% { transform: scale(0.7); opacity: 0;} 60% { transform: scale(1.2);} 100% { transform: scale(1); opacity: 1;} }
+    /* Progreso arcoíris */
+    .barra-progreso-animada {
+      background: linear-gradient(90deg, #e0e7ef 0%, #e0e7ef 100%); /* color suave, sin animación */
+      height: 18px;
+      width: 100%;
+      border-radius: 10px;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+    /* Eliminar la animación rainbowBar y el background-size */
+    /*@keyframes rainbowBar { 0% { background-position: 0% 50%;} 100% { background-position: 100% 50%;} }*/
+    #progreso { height: 100%; width: 0; background: linear-gradient(90deg,#10b981,#3b82f6); transition: width 0.4s; }
+    /* Fondo animado con burbujas */
+    body { position: relative; overflow-x: hidden; }
+    .burbuja { position: absolute; border-radius: 50%; opacity: 0.25; pointer-events: none; animation: burbujaSube 12s linear infinite; }
+    @keyframes burbujaSube { 0% { bottom: -100px; opacity: 0.3;} 50% { opacity: 0.5;} 100% { bottom: 110vh; opacity: 0;} }
+  </style>
+</head>
+<body>
+  <div class="fondo-animado-2">
+    <span class="estrella estrella1">⭐</span>
+    <span class="estrella estrella2">🌟</span>
+    <span class="estrella estrella3">✨</span>
+    <span class="estrella estrella4">⭐</span>
+    <span class="estrella estrella5">🌟</span>
+  </div>
+  <div class="encabezado">
+    <h1>Juego 2: Escucha y elige</h1>
+    <p>Escucha el sonido y selecciona la letra correcta</p>
+  </div>
+
+  <div class="contenedor-juego">
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <div class="panel-lateral panel-tiempo" id="tiempo">⏳<br>Tiempo:<br>60s</div>
+      <div class="panel-lateral panel-vidas" id="panel-vidas">
+        <div id="vidas" class="vidas-dinamicas">❤️❤️❤️</div>
+        <div class="texto-vidas">Vidas</div>
+      </div>
+    </div>
+
+    <div id="juego-contenido">
+      <div class="panel-progreso">
+        <div class="titulo-progreso"><span style="font-size:1.2em;">📚</span> Progreso</div>
+        <div id="barra-progreso" class="barra-progreso-animada">
+          <div id="progreso"></div>
+        </div>
+      </div>
+      <div id="combo" class="combo-animado"></div>
+      <button id="btn-reproducir" class="boton-reproducir"><span class="icono-altavoz">🔊</span> Reproducir sonido</button>
+      <div id="opciones" class="opciones-container"></div>
+      <p id="mensaje" class="mensaje-juego"></p>
+      <button id="btn-siguiente" class="boton-siguiente">Siguiente</button>
+      <br>
+      <a href="../juegos.html" class="boton-volver">⏪ Volver al menú de juegos</a>
+    </div>
+    <div class="panel-lateral panel-puntaje" id="puntaje">⭐<br>Puntaje:<br>0 / 20</div>
+  </div>
+
+  <script src="juego2.js"></script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+/* === juegos.css - VERSIÓN FINAL UNIFICADA === */
+
+/* Estilos generales y fondo animado para todos los juegos y páginas */
+body {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  background: linear-gradient(270deg, #9f66b6, #ec7575, #a3ffa0, #78cdf5);
+  background-size: 800% 800%;
+  animation: fondoAnimado 30s ease infinite;
+  color: #333;
+  text-align: center;
+  padding: 20px;
+  margin: 0;
+  min-height: 100vh;
+}
+
+@keyframes fondoAnimado {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Encabezado con rebote */
+.encabezado {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 20px 30px;
+  border-radius: 20px;
+  display: inline-block;
+  margin: 30px auto;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  animation: rebote 2s infinite alternate;
+  border: 3px solid #facc15;
+  max-width: 90%;
+}
+
+@keyframes rebote {
+  from { transform: translateY(0); }
+  to { transform: translateY(-8px); }
+}
+
+.encabezado h1 {
+  color: #577ce2;
+  margin: 0;
+  font-size: 2rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.encabezado p {
+  color: #5439b8;
+  margin: 10px 0 0;
+  font-size: 1.2rem;
+}
+
+/* Estructura del juego */
+.contenedor-juego {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  max-width: 1000px;
+  margin: 20px auto;
+  flex-wrap: wrap;
+  padding: 0 15px;
+}
+
+/* Paneles laterales */
+.panel-lateral {
+  background: rgba(255,255,255,0.95);
+  border-radius: 20px;
+  padding: 20px;
+  min-width: 140px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: #1d4ed8;
+  text-align: center;
+  border: 3px solid #facc15;
+  transition: transform 0.3s;
+  flex: 1;
+  max-width: 160px;
+}
+
+.panel-lateral:hover {
+  transform: scale(1.05);
+}
+
+.panel-lateral div:first-child {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+
+/* Contenido principal del juego */
+.juego-contenido {
+  flex: 2;
+  background: rgba(255,255,255,0.95);
+  border-radius: 25px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  border: 4px solid #f59e0b;
+  animation: aparecer 0.8s ease;
+  text-align: center;
+  min-width: 300px;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Elementos del juego */
+.imagen-palabra {
+  width: 250px;
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: transform 0.3s;
+  margin-bottom: 20px;
+  border: 3px solid white;
+}
+
+.imagen-palabra:hover {
+  transform: scale(1.05);
+}
+
+/* Contenedor de opciones */
+.opciones-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin: 25px 0;
+}
+
+/* Botones de opciones */
+.boton-opcion {
+  font-size: 1.5rem;
+  padding: 15px 25px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  font-weight: bold;
+  min-width: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.boton-opcion:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.boton-opcion:active {
+  transform: scale(0.95);
+}
+
+.boton-opcion.correcto {
+  background: linear-gradient(135deg, #10b981, #34d399);
+}
+
+.boton-opcion.incorrecto {
+  background: linear-gradient(135deg, #ef4444, #f87171);
+}
+
+/* Efecto de brillo para botones */
+.boton-opcion::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -75%;
+  width: 50%;
+  height: 200%;
+  background: rgba(255,255,255,0.3);
+  transform: skewX(-25deg);
+  transition: left 0.5s ease;
+  z-index: 0;
+}
+
+.boton-opcion:hover::before {
+  left: 120%;
+  transition: left 0.7s ease;
+}
+
+/* Mensajes de feedback */
+.mensaje-juego {
+  font-size: 1.4rem;
+  margin: 15px 0;
+  min-height: 32px;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.mensaje-juego.correcto {
+  color: #10b981;
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.mensaje-juego.incorrecto {
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* Botones de acción */
+.boton-siguiente {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  color: white;
+  padding: 12px 25px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin: 10px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.boton-siguiente:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.boton-siguiente:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.boton-volver {
+  display: inline-block;
+  background: linear-gradient(135deg, #f97316, #fb923c);
+  color: white;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  text-decoration: none;
+  margin-top: 15px;
+  transition: all 0.3s;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.boton-volver:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+/* Versión móvil */
+@media (max-width: 768px) {
+  .contenedor-juego {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .panel-lateral {
+    max-width: 100%;
+    width: auto;
+    flex-direction: row;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .panel-lateral div {
+    margin: 0;
+  }
+  
+  .encabezado {
+    padding: 15px;
+  }
+  
+  .encabezado h1 {
+    font-size: 1.5rem;
+  }
+  
+  .imagen-palabra {
+    width: 200px;
+  }
+  #temporizador-barra {
+  width: 100%;
+  height: 25px;
+  background-color: #ddd;
+  border: 2px solid #555;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+#barra-tiempo {
+  height: 100%;
+  width: 100%;
+  background-color: #38bdf8; /* azul llamativo */
+  transition: width 1s linear;
+}
+
+}

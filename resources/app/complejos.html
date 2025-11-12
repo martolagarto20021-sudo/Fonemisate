@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fonemas Complejos</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-image: url('img/Fondo.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .panel-abecedario {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 25px;
+      padding: 30px;
+      max-width: 900px;
+      margin: 40px auto;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      border: 4px solid #fa1515;
+    }
+
+    #titulo {
+      font-size: 38px;
+      color: #f97316;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 3px #c75b0c;
+    }
+
+    .grid-letras {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin: 0 auto 40px auto;
+      max-width: 700px;
+    }
+
+    .letra {
+      width: 70px;
+      height: 70px;
+      border-radius: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 36px;
+      font-weight: 900;
+      color: #4a4a4a;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
+      border: 3px solid transparent;
+      box-shadow:
+        inset 0 -4px 8px rgba(255, 255, 255, 0.6),
+        3px 3px 8px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+      user-select: none;
+      transition:
+        background-color 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Colores pastel individuales */
+    .letra:nth-child(1) {
+      background-color: #f9d5e5;
+      border-color: #e2a9c9;
+    }
+
+    .letra:nth-child(2) {
+      background-color: #fce1a8;
+      border-color: #e4cb6b;
+    }
+
+    .letra:nth-child(3) {
+      background-color: #a7d8de;
+      border-color: #75a7af;
+    }
+
+    .letra:nth-child(4) {
+      background-color: #c3e7bb;
+      border-color: #89b66e;
+    }
+
+    .letra:nth-child(5) {
+      background-color: #ffd8be;
+      border-color: #e6af7f;
+    }
+
+    .letra:nth-child(6) {
+      background-color: #f6b8b8;
+      border-color: #d77a7a;
+    }
+
+    .letra:nth-child(7) {
+      background-color: #e4c1f9;
+      border-color: #b89eed;
+    }
+
+    .letra:nth-child(8) {
+      background-color: #fff7bd;
+      border-color: #e2d879;
+    }
+
+    .letra:nth-child(9) {
+      background-color: #b0d0d3;
+      border-color: #6f9ea4;
+    }
+
+    .letra:nth-child(10) {
+      background-color: #a3d9a5;
+      border-color: #5d9752;
+    }
+
+    .letra:nth-child(11) {
+      background-color: #f3c6b8;
+      border-color: #d8987c;
+    }
+
+    .letra:nth-child(12) {
+      background-color: #d8f3dc;
+      border-color: #a4be9e;
+    }
+
+    .letra:nth-child(13) {
+      background-color: #fce9d8;
+      border-color: #e2b88a;
+    }
+
+    .letra:nth-child(14) {
+      background-color: #ffc8dd;
+      border-color: #e493a4;
+    }
+
+    .letra:nth-child(15) {
+      background-color: #d0f4de;
+      border-color: #86c299;
+    }
+
+    .letra:hover {
+      filter: brightness(1.1);
+      transform: scale(1.2) rotate(-5deg);
+      box-shadow:
+        0 0 14px 3px rgba(255, 255, 255, 0.7),
+        0 0 25px 5px rgba(0, 0, 0, 0.15);
+      border-color: #fff;
+      z-index: 10;
+    }
+
+    .letra:active {
+      transform: scale(0.95) rotate(0deg);
+      box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.2);
+      border-color: transparent;
+    }
+
+    .boton-menu-principal {
+      background: linear-gradient(135deg, #3b82f6, #60a5fa);
+      border: 3px solid #60a5fa;
+      color: white;
+      font-weight: 900;
+      font-size: 22px;
+      padding: 15px 35px;
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow:
+        0 8px 15px rgba(0, 0, 0, 0.3),
+        inset 0 -3px 5px rgba(0, 0, 0, 0.15);
+      transition: all 0.4s ease;
+      user-select: none;
+      text-shadow: 0 0 7px rgba(0, 0, 0, 0.2);
+      margin: 20px auto;
+      display: block;
+      max-width: 250px;
+    }
+
+    .boton-menu-principal:hover {
+      background: linear-gradient(135deg, #60a5fa, #3b82f6);
+      box-shadow:
+        0 12px 25px rgba(0, 0, 0, 0.5),
+        inset 0 -5px 7px rgba(0, 0, 0, 0.3);
+      transform: scale(1.1) rotate(-3deg);
+    }
+
+    .boton-menu-principal:active {
+      transform: scale(0.95) rotate(0deg);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    #contenido-fonema {
+      margin-top: 1vw;
+      display: none;
+    }
+    
+    #contenido-fonema .contenido-organizado {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2vw;
+      max-width: 1400px;
+      margin: 0 auto 1.5vw auto;
+      align-items: start;
+    }
+    
+    @media (max-width: 900px) {
+      #contenido-fonema .contenido-organizado {
+        grid-template-columns: 1fr;
+        gap: 2.5vw;
+      }
+    }
+    
+    #contenido-fonema .letra-fonema {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-size: 3.5vw;
+      font-weight: 900;
+      color: #2d3748;
+      text-shadow: 
+        2px 2px 0px #ffffff,
+        4px 4px 0px #e2e8f0;
+      background: linear-gradient(45deg, 
+        #fed7d7, #feb2b2, #fbb6ce, #e9d8fd, #c6f6d5, #b2f5ea, 
+        #bee3f8, #bfdbfe, #c4b5fd, #fbb6ce, #fed7d7, #feb2b2);
+      background-size: 300% 300%;
+      border-radius: 30px;
+      padding: 1.5vw 3vw;
+      box-shadow: 
+        0 8px 25px rgba(0,0,0,0.15),
+        inset 0 -4px 8px rgba(255,255,255,0.8);
+      border: 4px solid #e2e8f0;
+      width: 200px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      animation: gentleRgbWave 4s ease-in-out infinite, softBounce 2s ease-in-out infinite alternate;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    
+    #contenido-fonema .letra-fonema::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, 
+        transparent, rgba(255,255,255,0.2), transparent, 
+        rgba(255,255,255,0.3), transparent, rgba(255,255,255,0.2));
+      animation: gentleSparkle 3s linear infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes gentleRgbWave {
+      0% {
+        background-position: 0% 0%;
+        transform: scale(1) rotate(0deg);
+      }
+      25% {
+        background-position: 100% 0%;
+        transform: scale(1.02) rotate(0.5deg);
+      }
+      50% {
+        background-position: 100% 100%;
+        transform: scale(1.03) rotate(0deg);
+      }
+      75% {
+        background-position: 0% 100%;
+        transform: scale(1.02) rotate(-0.5deg);
+      }
+      100% {
+        background-position: 0% 0%;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+    
+    @keyframes softBounce {
+      0% {
+        transform: translateY(0px);
+      }
+      100% {
+        transform: translateY(-3px);
+      }
+    }
+    
+    @keyframes gentleSparkle {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+    #contenido-fonema .imagen-ejemplo {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+      border-radius: 25px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      background: #fff;
+      border: 4px solid #f59e0b;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+    
+    #contenido-fonema .imagen-ejemplo:hover {
+      transform: scale(1.05) rotate(2deg);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+    }
+    
+    #contenido-fonema .palabras-ejemplo {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-size: 1vw;
+      font-weight: bold;
+      color: #4a5568;
+      text-align: center;
+      padding: 1vw 1.5vw;
+      background: linear-gradient(135deg, #e6fffa, #b2f5ea);
+      border-radius: 25px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      border: 3px solid #38b2ac;
+      text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+      transition: all 0.3s ease;
+      width: 500px;
+      flex-shrink: 0;
+    }
+    
+    #contenido-fonema .palabras-ejemplo:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    }
+    
+    #contenido-fonema .palabras-ejemplo ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.8vw;
+    }
+    
+    #contenido-fonema .palabras-ejemplo li {
+      background: rgba(255,255,255,0.8);
+      padding: 0.5vw 0.8vw;
+      border-radius: 15px;
+      border: 2px solid #38b2ac;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      font-size: 0.9vw;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    
+    #contenido-fonema .palabras-ejemplo li:hover {
+      background: rgba(255,255,255,0.95);
+      transform: scale(1.08);
+      box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+      border-color: #2c7a7b;
+    }
+    
+    /* Estilos para las secciones organizadas */
+    #contenido-fonema .seccion-fonema,
+    #contenido-fonema .seccion-ejemplo-principal,
+    #contenido-fonema .seccion-mas-ejemplos {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8vw;
+      padding: 1.2vw;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    #contenido-fonema .titulo-fonema,
+    #contenido-fonema .titulo-ejemplo-principal,
+    #contenido-fonema .titulo-mas-ejemplos {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      font-size: 1.2vw;
+      font-weight: bold;
+      color: #2d3748;
+      text-align: center;
+      margin: 0;
+      padding: 0.6vw 1.2vw;
+      border-radius: 20px;
+      text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+      flex-shrink: 0;
+    }
+    
+    #contenido-fonema .titulo-fonema {
+      background: linear-gradient(135deg, #fed7d7, #fbb6ce);
+      border: 2px solid #e53e3e;
+    }
+    
+    #contenido-fonema .titulo-ejemplo-principal {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border: 2px solid #f59e0b;
+    }
+    
+    #contenido-fonema .titulo-mas-ejemplos {
+      background: linear-gradient(135deg, #e6fffa, #b2f5ea);
+      border: 2px solid #38b2ac;
+    }
+    
+    #contenido-fonema .seccion-mas-ejemplos-completa {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1vw;
+      padding: 1.5vw;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      max-width: 1400px;
+      margin: 0 auto 1.5vw auto;
+    }
+    
+    #contenido-fonema .letra-fonema:hover {
+      transform: scale(1.05) rotate(-2deg);
+      box-shadow: 
+        0 12px 35px rgba(0,0,0,0.3),
+        inset 0 -6px 12px rgba(255,255,255,0.8);
+    }
+    
+
+    
+    #contenido-fonema .contenedor-volver {
+      display: flex;
+      justify-content: center;
+      gap: 2vw;
+      margin-top: 1vw;
+    }
+    
+    #contenido-fonema .boton-menu-principal {
+      min-width: 180px;
+      font-size: 1.2vw;
+      padding: 12px 20px;
+      border-radius: 22px;
+      font-weight: bold;
+    }
+
+    .imagenes-fonema {
+      display: flex;
+      justify-content: center;
+      gap: 1vw; /* antes 25px */
+      flex-wrap: wrap;
+      margin-bottom: 25px;
+    }
+
+    .imagenes-fonema img {
+      width: 18vw;         /* antes 220px */
+      max-width: 190px;    /* antes 90vw */
+      border-radius: 20px;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+      transition: transform 0.4s ease;
+    }
+
+    .imagenes-fonema img:hover {
+      transform: scale(1.05) rotate(2deg);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    audio {
+      outline: none;
+      width: 300px;
+      max-width: 90vw;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      margin-bottom: 30px;
+      cursor: pointer;
+      filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.2));
+    }
+
+    .contenedor-volver {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    #contenido-fonema .imagenes-fonema img {
+      width: 170px;
+      height: 170px;
+      object-fit: contain;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+      margin-bottom: 6px;
+    }
+
+    #contenido-fonema .imagenes-fonema > div > img {
+      width: 260px;
+      height: 260px;
+      object-fit: contain;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="panel-abecedario" id="panel">
+    <h1 id="titulo">🔡 Fonemas Complejos</h1>
+
+    <div id="contenido-letras" class="grid-letras">
+      <script>
+        const fonemas = [
+          'CH', 'LL', 'RR', 'BR', 'TR', 'GR',
+          'CL', 'FL', 'DR', 'PL', 'BL', 'FR', 'CR', 'PR', 'GL'
+        ];
+        document.write(
+          fonemas.map(fonema =>
+            `<button class="letra" onclick="mostrarContenido('${fonema}')">${fonema}</button>`
+          ).join('')
+        );
+      </script>
+      <button class="boton-menu-principal" onclick="volverPaginaPrincipal()">🏠 Página Principal</button>
+    </div>
+
+    <div id="contenido-fonema">
+      <div class="contenido-organizado">
+        <!-- Sección 1: Fonema principal -->
+        <div class="seccion-fonema">
+          <h3 class="titulo-fonema">🔤 Fonema</h3>
+          <div class="letra-fonema" id="letra-fonema">
+            <!-- El fonema se mostrará aquí como texto -->
+          </div>
+        </div>
+        
+        <!-- Sección 2: Ejemplo principal -->
+        <div class="seccion-ejemplo-principal">
+          <h3 class="titulo-ejemplo-principal">📖 Ejemplo Principal</h3>
+          <img class="imagen-ejemplo" id="imagen-ejemplo" src="" alt="Ejemplo del fonema" />
+        </div>
+      </div>
+      
+      <!-- Sección 3: Más ejemplos (dentro del margen principal) -->
+      <div class="seccion-mas-ejemplos-completa">
+        <h3 class="titulo-mas-ejemplos">📝 Más Ejemplos</h3>
+        <div class="palabras-ejemplo" id="palabras-ejemplo">
+          <ul id="lista-palabras">
+            <!-- Las palabras de ejemplo se mostrarán aquí -->
+          </ul>
+        </div>
+      </div>
+      <div class="contenedor-volver">
+        <button class="boton-menu-principal" onclick="volverAFonemas()">🔙 Volver a Fonemas</button>
+        <button class="boton-menu-principal" onclick="volverPaginaPrincipal()">🏠 Página Principal</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function mostrarContenido(fonema) {
+      document.getElementById('titulo').innerText = `🔡 Fonema "${fonema}"`;
+      document.getElementById('contenido-letras').style.display = 'none';
+      document.getElementById('contenido-fonema').style.display = 'block';
+
+      // Mostrar el fonema como texto llamativo
+      document.getElementById('letra-fonema').textContent = fonema;
+      
+      // Cargar la imagen de ejemplo del fonema
+      const nombreArchivo = fonema.toLowerCase();
+      document.getElementById('imagen-ejemplo').src = `img/ejemplos/${nombreArchivo}.png`;
+      
+      // Cargar las palabras de ejemplo correspondientes
+      const palabrasEjemplo = {
+        'CH': ['CHICO', 'CHICA', 'CHILE', 'CHISTE'],
+        'LL': ['LLAVE', 'LLUVIA', 'LLAMA', 'LLENO'],
+        'RR': ['PERRO', 'CARRO', 'TERRA', 'SORRA'],
+        'BR': ['BRAZO', 'BRASA', 'BRUJA', 'BRISA'],
+        'TR': ['TREN', 'TRES', 'TROPA', 'TRONO'],
+        'GR': ['GRANDE', 'GRITO', 'GRASA', 'GRADO'],
+        'CL': ['CLASE', 'CLIMA', 'CLAVE', 'CLARO'],
+        'FL': ['FLOR', 'FLAMA', 'FLOTA', 'FLUJO'],
+        'DR': ['DRAGÓN', 'DROGA', 'DRAMA', 'DROGA'],
+        'PL': ['PLATO', 'PLAZA', 'PLUMA', 'PLANO'],
+        'BL': ['BLANCO', 'BLUSA', 'BLUMA', 'BLOCA'],
+        'FR': ['FRESA', 'FRESA', 'FRITO', 'FRENA'],
+        'CR': ['CRUZ', 'CRIO', 'CRASO', 'CRUZA'],
+        'PR': ['PRINCESA', 'PRIMO', 'PRISA', 'PRADO'],
+        'GL': ['GLOBO', 'GLOSA', 'GLUMA', 'GLOSA']
+      };
+      
+      const palabras = palabrasEjemplo[fonema] || [fonema];
+      const listaPalabras = document.getElementById('lista-palabras');
+      listaPalabras.innerHTML = '';
+      
+      palabras.forEach(palabra => {
+        const li = document.createElement('li');
+        li.textContent = palabra;
+        listaPalabras.appendChild(li);
+      });
+    }
+
+    function volverAFonemas() {
+      document.getElementById('titulo').innerText = '🔡 Fonemas Complejos';
+      document.getElementById('contenido-letras').style.display = '';
+      document.getElementById('contenido-fonema').style.display = 'none';
+    }
+
+    function volverPaginaPrincipal() {
+      window.location.href = 'index.html';
+    }
+
+
+  </script>
+</body>
+
+</html>
